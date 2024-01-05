@@ -1,13 +1,16 @@
-FROM python:3-onbuild
+FROM python:3
+
+WORKDIR /app
+RUN mkdir /app/ipython_nb
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8888
 
-RUN mkdir /home/ipython_nb
+ENV PASSWORD=123456
 
-ENV PASSWORD 123456
+ADD start_jupyter.sh /app
+RUN chmod +x /app/start_jupyter.sh
 
-ADD start_jupyter.sh /home
-RUN chmod +x /home/start_jupyter.sh
-
-CMD ["/home/start_jupyter.sh"]
-
+CMD ["sh", "./start_jupyter.sh"]
